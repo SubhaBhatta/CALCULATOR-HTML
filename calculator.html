@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-color: #f0f0f0;
             margin: 0;
         }
 
@@ -19,44 +20,46 @@
         }
 
         .calculator {
-            background-color: #333;
-            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 10px;
             padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: #333;
+            width: 100%;
+            max-width: 400px;
         }
 
-        #result {
-            width: 220px;
-            height: 60px;
-            font-size: 24px;
+        .calculator input[type="text"] {
+            grid-column: span 5;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.5em;
             text-align: right;
-            padding: 10px;
+            box-sizing: border-box;
             background-color: #fff;
+            color: #333;
+        }
+
+        .calculator button {
+            padding: 20px;
+            font-size: 1.2em;
             border: none;
             border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-gap: 10px;
-        }
-
-        button {
-            width: 50px;
-            height: 50px;
-            font-size: 18px;
             background-color: #555;
             color: #fff;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
-        button:hover {
+        .calculator button:hover {
             background-color: #777;
+        }
+
+        .calculator button:active {
+            background-color: #ccc;
         }
 
         .operator {
@@ -71,6 +74,7 @@
         .clear {
             background-color: #ff3333;
             color: #fff;
+            grid-column: 5;
         }
 
         .clear:hover {
@@ -80,65 +84,73 @@
         .equal {
             background-color: #4caf50;
             color: #fff;
-            grid-column: span 2;
         }
 
         .equal:hover {
             background-color: #6fbf73;
         }
 
-        .made-by {
-            font-size: 18px;
-            color: #666;
-            margin-left: 20px;
+        .calculator .span-2 {
+            grid-column: span 2;
+        }
+
+        .calculator .span-3 {
+            grid-column: span 3;
         }
     </style>
 </head>
 <body>
-    <div class="calculator-container">
-        <div class="calculator">
-            <input type="text" id="result" disabled>
-            <div class="buttons">
-                <button class="clear" onclick="clearResult()">C</button>
-                <button class="operator" onclick="appendToResult('/')">&divide;</button>
-                <button class="operator" onclick="appendToResult('*')">&times;</button>
-                <button class="operator" onclick="appendToResult('-')">-</button>
-                <button onclick="appendToResult('7')">7</button>
-                <button onclick="appendToResult('8')">8</button>
-                <button onclick="appendToResult('9')">9</button>
-                <button class="operator" onclick="appendToResult('+')">+</button>
-                <button onclick="appendToResult('4')">4</button>
-                <button onclick="appendToResult('5')">5</button>
-                <button onclick="appendToResult('6')">6</button>
-                <button class="equal" onclick="calculate()">=</button>
-                <button onclick="appendToResult('1')">1</button>
-                <button onclick="appendToResult('2')">2</button>
-                <button onclick="appendToResult('3')">3</button>
-                <button onclick="appendToResult('0')">0</button>
-                <button onclick="appendToResult('.')">.</button>
-            </div>
-        </div>
-        <div class="made-by">MADE BY Subhadaya</div>
+
+<div class="calculator-container">
+    <div class="calculator">
+        <input type="text" id="display" readonly>
+        <button class="clear" onclick="clearDisplay()">C</button>
+        <button class="operator" onclick="appendToDisplay('sin(')">sin</button>
+        <button class="operator" onclick="appendToDisplay('cos(')">cos</button>
+        <button class="operator" onclick="appendToDisplay('tan(')">tan</button>
+        <button class="operator" onclick="appendToDisplay('log(')">log</button>
+        <button class="operator" onclick="appendToDisplay('ln(')">ln</button>
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button class="operator" onclick="appendToDisplay('/')">&divide;</button>
+        <button class="operator" onclick="appendToDisplay('sqrt(')">sqrt</button>
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button class="operator" onclick="appendToDisplay('*')">&times;</button>
+        <button class="operator" onclick="appendToDisplay('^')">^</button>
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button class="operator" onclick="appendToDisplay('-')">-</button>
+        <button onclick="appendToDisplay('(')">(</button>
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="appendToDisplay('.')">.</button>
+        <button class="equal span-2" onclick="calculate()">=</button>
+        <button class="operator" onclick="appendToDisplay('+')">+</button>
+        <button onclick="appendToDisplay(')')">)</button>
     </div>
+    <div class="made-by" style="color: #0f29f0; margin-left: 20px; font-size: 18px;">MADE BY Subhadaya</div>
+</div>
 
-    <script>
-        let resultInput = document.getElementById("result");
+<script>
+    function appendToDisplay(value) {
+        document.getElementById('display').value += value;
+    }
 
-        function appendToResult(value) {
-            resultInput.value += value;
+    function calculate() {
+        try {
+            document.getElementById('display').value = eval(document.getElementById('display').value);
+        } catch (error) {
+            document.getElementById('display').value = 'Error';
         }
+    }
 
-        function clearResult() {
-            resultInput.value = "";
-        }
+    function clearDisplay() {
+        document.getElementById('display').value = '';
+    }
+</script>
 
-        function calculate() {
-            try {
-                resultInput.value = eval(resultInput.value);
-            } catch (e) {
-                resultInput.value = "Error";
-            }
-        }
-    </script>
 </body>
 </html>
