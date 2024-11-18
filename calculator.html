@@ -11,7 +11,7 @@
             --color-text: #2c3e50;
             --color-button-primary: #4a90e2;
             --color-button-secondary: #5f6368;
-            --color-button-operator: #ff6b6b;
+            --color-button-operator: #5f6368;
             --color-button-equal: #2ecc71;
             --color-button-clear: #ff9f1c;
             --shadow-light: rgba(0, 0, 0, 0.1);
@@ -39,7 +39,7 @@
 
         .calculator {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr); /* Four equal columns */
             grid-gap: 10px;
             padding: 25px;
             border-radius: 15px;
@@ -52,7 +52,7 @@
         }
 
         .calculator input[type="text"] {
-            grid-column: span 5;
+            grid-column: span 4;  /* Span across all 4 columns */
             padding: 20px;
             margin-bottom: 15px;
             border: 2px solid #ecf0f1;
@@ -69,18 +69,22 @@
         .calculator button {
             appearance: none;
             border: none;
-            border-radius: 10px;
+            border-radius: 5px;
             padding: 15px;
-            font-size: 1.1em;
-            font-weight: 600;
+            font-size: 1.2em;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
+            background: linear-gradient(to bottom, #ffffff, var(--color-button-secondary));
             color: white;
-            background-color: var(--color-button-secondary);
-            box-shadow: 0 4px 6px var(--shadow-light);
+            box-shadow: 0 4px #999;
+            transition: all 0.2s ease;
             position: relative;
-            overflow: hidden;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        .calculator button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px #666;
         }
 
         .calculator button::before {
@@ -90,40 +94,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255,255,255,0.2);
-            opacity: 0;
-            transition: opacity 0.3s;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            pointer-events: none;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            z-index: 1;
         }
 
-        .calculator button:hover::before {
-            opacity: 1;
+        .calculator button.clear {
+            background: linear-gradient(to bottom, #ffd085, var(--color-button-clear));
+            grid-column: span 2;  /* Make the C button span two columns */
         }
 
-        .calculator button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px var(--shadow-dark);
-        }
-
-        .calculator button:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 4px var(--shadow-light);
-        }
-
-        .operator {
-            background-color: var(--color-button-operator);
-        }
-
-        .clear {
-            background-color: var(--color-button-clear);
-            grid-column: 5;
-        }
-
-        .equal {
-            background-color: var(--color-button-equal);
-        }
-
-        .calculator .span-2 {
-            grid-column: span 2;
+        .calculator button.equal {
+            background: linear-gradient(to bottom, #88e087, var(--color-button-equal));
+            grid-column: span 2; /* Make the equal button span two columns */
         }
 
         .made-by {
@@ -162,7 +147,7 @@
         <button onclick="appendToDisplay('(')">(</button>
         <button onclick="appendToDisplay('0')">0</button>
         <button onclick="appendToDisplay('.')">.</button>
-        <button class="equal span-2" onclick="calculate()">=</button>
+        <button class="equal" onclick="calculate()">=</button>
         <button class="operator" onclick="appendToDisplay('+')">+</button>
         <button onclick="appendToDisplay(')')">)</button>
     </div>
