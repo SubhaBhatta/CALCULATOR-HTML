@@ -11,7 +11,7 @@
             --color-text: #2c3e50;
             --color-button-primary: #4a90e2;
             --color-button-secondary: #5f6368;
-            --color-button-operator: #5f6368;
+            --color-button-operator: #ff6b6b;
             --color-button-equal: #2ecc71;
             --color-button-clear: #ff9f1c;
             --shadow-light: rgba(0, 0, 0, 0.1);
@@ -99,6 +99,10 @@
             pointer-events: none;
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
             z-index: 1;
+        }
+
+        .calculator button.operator {
+            background: linear-gradient(to bottom, #ff8585, var(--color-button-operator));
         }
 
         .calculator button.clear {
