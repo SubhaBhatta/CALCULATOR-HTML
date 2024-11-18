@@ -5,134 +5,217 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scientific Calculator</title>
     <style>
+        :root {
+            --bg-primary: #f4f4f4;
+            --bg-calculator: #ffffff;
+            --color-text: #2c3e50;
+            --color-button-primary: #4a90e2;
+            --color-button-secondary: #5f6368;
+            --color-button-operator: #ff6b6b;
+            --color-button-equal: #2ecc71;
+            --color-button-clear: #ff9f1c;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-dark: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f0f0f0;
-            perspective: 1000px;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            transition: background 0.3s;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #e9e9e9 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .calculator-container {
+            text-align: center;
         }
 
         .calculator {
-            width: 320px;
-            background-color: #2c2c2c;
-            border-radius: 10px;
-            box-shadow: 
-                0 15px 25px rgba(0,0,0,0.2), 
-                0 10px 10px rgba(0,0,0,0.1);
-            padding: 15px;
-            transition: all 0.3s ease;
-            transform: rotateX(15deg) rotateY(5deg);
-        }
-
-        .calculator:hover {
-            transform: rotateX(0) scale(1.02);
-            box-shadow: 
-                0 20px 30px rgba(0,0,0,0.3), 
-                0 15px 15px rgba(0,0,0,0.2);
-        }
-
-        #display {
-            width: 100%;
-            height: 60px;
-            background-color: #1c1c1c;
-            color: #00ff00;
-            border: none;
-            text-align: right;
-            font-size: 24px;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .buttons {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 10px;
+            padding: 25px;
+            border-radius: 15px;
+            background-color: var(--bg-calculator);
+            box-shadow: 
+                0 15px 25px var(--shadow-dark),
+                0 5px 10px var(--shadow-light);
+            max-width: 450px;
+            width: 100%;
         }
 
-        button {
-            background-color: #404040;
-            color: white;
+        .calculator input[type="text"] {
+            grid-column: span 5;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            font-size: 1.8em;
+            text-align: right;
+            background-color: #f8f9fa;
+            color: var(--color-text);
+            font-weight: 300;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+        }
+
+        .calculator button {
+            appearance: none;
             border: none;
+            border-radius: 10px;
             padding: 15px;
-            font-size: 18px;
+            font-size: 1.1em;
+            font-weight: 600;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            color: white;
+            background-color: var(--color-button-secondary);
+            box-shadow: 0 4px 6px var(--shadow-light);
+            position: relative;
+            overflow: hidden;
         }
 
-        button:hover {
-            background-color: #505050;
+        .calculator button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        button:active {
-            background-color: #606060;
+        .calculator button:hover::before {
+            opacity: 1;
+        }
+
+        .calculator button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px var(--shadow-dark);
+        }
+
+        .calculator button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px var(--shadow-light);
         }
 
         .operator {
-            background-color: #ff9800;
+            background-color: var(--color-button-operator);
+        }
+
+        .clear {
+            background-color: var(--color-button-clear);
+            grid-column: 5;
         }
 
         .equal {
-            background-color: #4CAF50;
+            background-color: var(--color-button-equal);
+        }
+
+        .calculator .span-2 {
             grid-column: span 2;
+        }
+
+        .made-by {
+            margin-top: 15px;
+            color: var(--color-text);
+            font-size: 1em;
+            font-weight: bold;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
+<div class="calculator-container">
     <div class="calculator">
         <input type="text" id="display" readonly>
-        <div class="buttons">
-            <button onclick="clearDisplay()">C</button>
-            <button onclick="appendToDisplay('(')">(</button>
-            <button onclick="appendToDisplay(')')">)</button>
-            <button class="operator" onclick="appendToDisplay('/')">÷</button>
-            
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button class="operator" onclick="appendToDisplay('*')">×</button>
-            
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button class="operator" onclick="appendToDisplay('-')">-</button>
-            
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button class="operator" onclick="appendToDisplay('+')">+</button>
-            
-            <button onclick="appendToDisplay('0')">0</button>
-            <button onclick="appendToDisplay('.')">.</button>
-            <button class="equal" onclick="calculate()">=</button>
-        </div>
+        <button class="clear" onclick="clearDisplay()">C</button>
+        <button class="operator" onclick="appendToDisplay('Math.sin(')">sin</button>
+        <button class="operator" onclick="appendToDisplay('Math.cos(')">cos</button>
+        <button class="operator" onclick="appendToDisplay('Math.tan(')">tan</button>
+        <button class="operator" onclick="appendToDisplay('Math.log10(')">log</button>
+        <button class="operator" onclick="appendToDisplay('Math.log(')">ln</button>
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button class="operator" onclick="appendToDisplay('/')">÷</button>
+        <button class="operator" onclick="appendToDisplay('Math.sqrt(')">√</button>
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button class="operator" onclick="appendToDisplay('*')">×</button>
+        <button class="operator" onclick="appendToDisplay('**')">^</button>
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button class="operator" onclick="appendToDisplay('-')">-</button>
+        <button onclick="appendToDisplay('(')">(</button>
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="appendToDisplay('.')">.</button>
+        <button class="equal span-2" onclick="calculate()">=</button>
+        <button class="operator" onclick="appendToDisplay('+')">+</button>
+        <button onclick="appendToDisplay(')')">)</button>
     </div>
+    <div class="made-by">MADE BY SUBHADAYA BHATTA</div>
+</div>
 
-    <script>
-        const display = document.getElementById('display');
+<script>
+    const display = document.getElementById('display');
+    const MAX_INPUT_LENGTH = 50;
+    const MAX_EVAL_COMPLEXITY = 100;
 
-        function appendToDisplay(value) {
+    function appendToDisplay(value) {
+        if (display.value.length < MAX_INPUT_LENGTH) {
             display.value += value;
         }
+    }
 
-        function calculate() {
-            try {
-                display.value = eval(display.value);
-            } catch {
-                display.value = 'Error';
+    function calculate() {
+        try {
+            const sanitizedInput = display.value
+                .replace(/[^0-9+\-*/().^a-zA-Z]/g, '')
+                .replace(/(\d+)(\()/g, '$1*$2');
+
+            if (sanitizedInput.length > MAX_EVAL_COMPLEXITY) {
+                throw new Error('Input too complex');
             }
-        }
 
-        function clearDisplay() {
-            display.value = '';
+            const result = Function(`"use strict"; return (${sanitizedInput})`)();
+            
+            display.value = isFinite(result) 
+                ? Number(result.toFixed(10)).toString() 
+                : 'Error';
+        } catch (error) {
+            display.value = 'Error';
         }
-    </script>
+    }
+
+    function clearDisplay() {
+        display.value = '';
+    }
+
+    document.addEventListener('keydown', (event) => {
+        const key = event.key;
+        const validKeys = '0123456789.+-*/()^sincostanlnlog';
+        
+        if (key === 'Enter') {
+            calculate();
+        } else if (key === 'Backspace') {
+            display.value = display.value.slice(0, -1);
+        } else if (validKeys.includes(key.toLowerCase())) {
+            appendToDisplay(key);
+        }
+    });
+</script>
 </body>
 </html>
